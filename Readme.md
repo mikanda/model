@@ -89,7 +89,7 @@
 ### constructor model([values])
 
   Initializes the model with the given `values`.  `values` is an object
-  holding the values for the model.  e.g. `{ name: 'My name', ... }
+  holding the values for the model.  e.g. `{ name: 'My name', ... }`
 
 ### model.ATTR
 
