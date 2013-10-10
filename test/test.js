@@ -1,0 +1,134 @@
+
+
+/**
+ * Module dependencies.
+ */
+
+var chai = require('chai')
+  , request = require('superagent')
+  , model = require('model')
+  , expect = chai.expect;
+
+
+/**
+ * Tests.
+ */
+
+describe('Model', function(){
+  it('should create a new model with primitive attrs', function(){
+    var Model = model()
+      .attr('name', '')
+      .attr('myone', '');
+    var m = new Model();
+    expect(m.name).to.equal('');
+    expect(m.myone).to.equal('');
+    m.name = 'TestName';
+    m.myone = 'MyOne';
+    expect(m.name).to.equal('TestName');
+    expect(m.myone).to.equal('MyOne');
+  });
+  it('should define preset values', function(){
+    var Model = model()
+      .attr('name', 'Name')
+      .attr('myone', { preset: 'MyOne' });
+    var m = new Model();
+    expect(m.name).to.equal('Name');
+    expect(m.myone).to.equal('MyOne');
+  });
+  it('should interprete persistent option', function(){
+    var Model = model()
+      .attr('name', { persistent: false })
+      .attr('myone', { persisten: true });
+    var m = new Model();
+    m.myone = 'Test';
+    expect(m.toJSON()).to.eql({ myone: 'Test' });
+  });
+  it('should load initial values', function(){
+  });
+  it('should interprete type', function(done){
+    request
+      .get('/address')
+      .end(function(err, res){
+        if (err) return done(err);
+        var user = new User();
+        user.address = res.body;
+        expect(user.address instanceof Address).to.be['true'];
+        expect(user.address.name).to.equal(res.body.name);
+        request
+          .get('/contact')
+          .end(function(err, res){
+            if (err) return done(err);
+            user.contact = res.body;
+            expect(user.contact instanceof Contact).to.be['true'];
+            expect(user.contact.name).to.equal(res.body.name);
+            done();
+          });
+      });
+  });
+  it('should load initial values', function(done){
+    request
+      .get('/user')
+      .end(function(err, res){
+        if (err) return done(err);
+        var user = new User(res.body);
+        expect(user.name).to.equal(res.body.name);
+        expect(user.address instanceof Address).to.be['true'];
+        expect(user.address.name).to.equal(res.body.address.name);
+        expect(user.contact instanceof Contact).to.be['true'];
+        expect(user.contact.name).to.equal(res.body.contact.name);
+        done();
+      });
+  });
+  it('should fire change events', function(done){
+    request
+      .get('/user')
+      .end(function(err, res){
+        if (err) return done(err);
+        var user = new User(res.body)
+          , spy = sinon.spy();
+        var name = user.name;
+        var addressName = user.address.name;
+        user.on('change', spy);
+        user.on('change name', spy);
+        user.name = 'Hans';
+        user.address.name = 'New one';
+        setTimeout(function(){
+          expect(spy.callCount).to.equal(4);
+          expect(spy.args).to.eql([
+            ['dirty', true, false],
+            ['name', 'Hans', name],
+            ['Hans', name],
+            ['address.name', 'New one', addressName]
+          ]);
+          done();
+        }, 0);
+      });
+  });
+});
+
+
+/**
+ * Models.
+ */
+
+var Address = model()
+  .attr('name')
+  .attr('streetAddress')
+  .attr('secondaryAddress')
+  .attr('postalCode')
+  .attr('addressLocality')
+  .attr('addressRegion')
+  .attr('addressCountry');
+
+var Contact = model()
+  .attr('name')
+  .attr('streetAddress')
+  .attr('telephone')
+  .attr('faxNumber')
+  .attr('email')
+  .attr('area');
+
+var User = model()
+  .attr('name')
+  .attr('address', Address)
+  .attr('contact', { type: Contact });

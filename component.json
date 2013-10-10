@@ -1,0 +1,30 @@
+{
+  "name": "model",
+  "repo": "mikanda/model",
+  "version": "0.0.0",
+  "description": "Tiny model with change-event support",
+  "paths": [
+    ".."
+  ],
+  "dependencies": {
+    "component/to-function": "1.1.1",
+    "component/object": "0.0.3",
+    "component/emitter": "1.0.1",
+    "component/each": "0.1.0",
+    "component/bind": "0.0.1",
+    "jkroso/equals": "0.3.2"
+  },
+  "development": {
+    "visionmedia/mocha": "*",
+    "visionmedia/superagent": "*",
+    "chaijs/chai": "*"
+  },
+  "local": [
+    "collection"
+  ],
+  "scripts": [
+    "index.js",
+    "proto.js",
+    "statics.js"
+  ]
+}

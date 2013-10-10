@@ -1,0 +1,14 @@
+!!! 5
+html
+  head
+    link(href='/build.css', rel='stylesheet')
+  body
+    #mocha
+    script(src='/build.js')
+    script(src='/sinon.js')
+    script.
+      require('mocha')
+      mocha.setup('bdd')
+    script(src='/test.js')
+    script.
+      mocha.run()
