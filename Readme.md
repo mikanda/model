@@ -82,7 +82,9 @@
 ### Events
 
   * `change(name, value, old)` - Fired on every change of the model. `name` is
-  the name of the attribute which changed, `value` is the 
+    the name of the attribute which changed, `value` is the new value of the
+    attribute and `old` is the old.
+  * `change ATTR` - Fired if `ATTR` was changed.
 
 ### constructor model([values])
 
