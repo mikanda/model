@@ -3,9 +3,6 @@
   "repo": "mikanda/model",
   "version": "0.0.0",
   "description": "Tiny model with change-event support",
-  "paths": [
-    ".."
-  ],
   "dependencies": {
     "component/to-function": "1.1.1",
     "component/object": "0.0.3",
@@ -19,9 +16,6 @@
     "visionmedia/superagent": "*",
     "chaijs/chai": "*"
   },
-  "local": [
-    "collection"
-  ],
   "scripts": [
     "index.js",
     "proto.js",
