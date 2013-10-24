@@ -160,7 +160,7 @@ exports._updateDirty = function(){
 
 exports.isDirty = function(attr){
   if (arguments.length == 0) return this.dirty;
-  var fn = toFunction(attr.replace(/\.?([0-9]+)(\.)?/g, '[$1]$2'))
+  var fn = toFunction(attr.replace(/\.([0-9]+)(\.)?/g, '[$1]$2'))
     , value = fn(this);
   if (value && typeof value.isDirty == 'function') return value.isDirty();
   if (attr in this._orig) return true;
