@@ -58,7 +58,7 @@ exports.set = function(attr, value, silent){
   if (value != null && typeof value.on == 'function') {
     this._bind(value, attr);
   } else if (!silent && opts.persistent) {
-    if (orig[attr] === undefined) orig[attr] = old;
+    if (!(attr in orig)) orig[attr] = old;
     else if (equals(orig[attr], value)) delete orig[attr];
     this._updateDirty();
   }
