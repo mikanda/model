@@ -80,9 +80,10 @@ function constructor() {
 
     // set initial values
 
-    each(values, function(attr, value){
-      self.set(attr, value, true);
-    });
+    for (var key in values) {
+      if (!values.hasOwnProperty(key)) continue;
+      self.set(key, values[key], true);
+    }
     Model.emit('construct', this);
   }
   return Model;
