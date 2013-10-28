@@ -52,7 +52,7 @@ exports.set = function(attr, value, silent){
       value = new opts.type(value);
 
       // take the value of primitive javascript datatypes
-      if (~['number', 'boolean', 'string'].indexOf(typeof value)) {
+      if (~[Number, Boolean, String].indexOf(opts.type)) {
         value = value.valueOf();
       }
     }
