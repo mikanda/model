@@ -49,7 +49,11 @@ exports.set = function(attr, value, silent){
   // convert the value into the type if necessary
   if (typeof opts.type == 'function') {
     if (!(value instanceof opts.type)) value = new opts.type(value);
-    value = value.valueOf();
+
+    // take the value of primitive javascript datatypes
+    if (~[' number', 'boolean', 'string'].indexOf(typeof value)) {
+      value = value.valueOf();
+    }
   }
   this._values[attr] = value;
   if (old && old.off) {
