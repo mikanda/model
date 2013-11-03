@@ -76,6 +76,22 @@ exports.set = function(attr, value, silent){
 };
 
 /**
+ * Resets all values. Also iterates on all nested models.
+ */
+
+exports.reset = function(){
+  var self = this;
+  each(this.model._attrs, function(attr){
+    var value = self[attr];
+    if (value != null && typeof value.reset == 'function') {
+      value.reset();
+    } else {
+      value = self._orig[attr];
+    }
+  });
+};
+
+/**
  * Resets the dirty bit.  Also iterates on all nested models.
  */
 
