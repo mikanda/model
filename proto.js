@@ -89,7 +89,7 @@ exports.reset = function(){
     var value = self[attr];
     if (value != null && typeof value.reset == 'function') {
       value.reset();
-    } else {
+    } else if (self._orig.hasOwnProperty(attr)) {
       self[attr] = self._orig[attr];
     }
   });
