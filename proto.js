@@ -81,12 +81,16 @@ exports.set = function(attr, value, silent){
 
 exports.reset = function(){
   var self = this;
+  if (!this.dirty) return;
   each(this.model.attrs, function(attr){
+
+    // skip dirty attr
+    if (attr == 'dirty') return;
     var value = self[attr];
     if (value != null && typeof value.reset == 'function') {
       value.reset();
     } else {
-      value = self._orig[attr];
+      self[attr] = self._orig[attr];
     }
   });
 };
@@ -99,6 +103,9 @@ exports.resetDirty = function(){
   this._orig = {};
   var self = this;
   each(this.model._attrs, function(attr){
+
+    // skip dirty attr
+    if (attr == 'dirty') return;
     var value = self[attr];
     if (value != null) {
       if (typeof value.resetDirty == 'function') {
