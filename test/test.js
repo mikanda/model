@@ -104,6 +104,23 @@ describe('Model', function(){
         }, 0);
       });
   });
+  describe('.reset()', function(){
+    it('should reset the example model', function(){
+      request
+        .get('/user')
+        .end(function(err, res){
+          if (err) return done(err);
+          var user = new User(res.body);
+          user.name = '';
+          user.address.name = '';
+          expect(user.dirty).to.be.true;
+          user.reset();
+          expect(user.dirty).to.be.false;
+          expect(user.name).to.equal(res.body.name);
+          expect(user.address.name).to.equal(res.body.address.name);
+        });
+      });
+  });
 });
 
 
