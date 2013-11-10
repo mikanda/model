@@ -214,9 +214,10 @@ exports.isDirty = function(attr){
 exports.update = function(values){
   var self = this
     , attrs = this.model._attrs;
-  each(values, function(key, value){
-    if (key in attrs) self[key] = value;
-  });
+  for (var key in values) {
+    if (!values.hasOwnProperty(key)) continue;
+    if (key in attrs) self[key] = values[key];
+  }
 };
 
 /**
