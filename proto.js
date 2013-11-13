@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -75,13 +76,13 @@ exports.set = function(attr, value, silent){
 };
 
 /**
- * Resets all values. Also iterates on all nested models.
+ * Resets the given attribute or all values. Also iterates on all nested models.
  */
 
-exports.reset = function(){
+exports.reset = function(attr){
   var self = this;
   if (!this.dirty) return;
-  each(this.model.attrs, function(attr){
+  function reset(attr) {
 
     // skip dirty attr
     if (attr == 'dirty') return;
@@ -91,7 +92,8 @@ exports.reset = function(){
     } else if (self._orig.hasOwnProperty(attr)) {
       self[attr] = self._orig[attr];
     }
-  });
+  }
+  return attr === undefined ? each(this.model.attrs, reset) : reset(attr);
 };
 
 /**

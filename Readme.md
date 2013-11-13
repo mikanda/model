@@ -120,9 +120,9 @@
 
   Resets the dirty state of the model and all submodels.
 
-### model.reset()
+### model.reset([attrName])
 
-  Resets all values of the model and all submodels.
+  Resets the given ``attrName`` or all values of the model and all submodels.
 
 ### model.toJSON()
 
