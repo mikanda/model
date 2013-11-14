@@ -44,7 +44,7 @@ exports.set = function(attr, value, silent){
 
   // ignore undefined attrs
   if (opts === undefined) return value;
-  if (value === old) return value;
+  if (equals(value, old)) return value;
 
   // convert the value into the type if necessary and not null
   if (typeof opts.type == 'function') {
