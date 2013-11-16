@@ -19,7 +19,6 @@ var bind = require('bind')
  */
 
 exports.get = function(attr, value){
-  if (typeof value == 'function') return value();
   if (this._values[attr] === undefined) return value;
   return this._values[attr];
 };
