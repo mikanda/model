@@ -1,4 +1,3 @@
-
 /**
  * Module dependencies.
  */
@@ -44,9 +43,9 @@ exports.set = function(attr, value, silent){
   if (opts === undefined) return value;
   if (value === old) return value;
 
-  // convert the value into the type if necessary
+  // convert the value into the type if necessary and not null
   if (typeof opts.type == 'function') {
-    if (!(value instanceof opts.type)) {
+    if (!(value instanceof opts.type) && value !== null) {
       value = new opts.type(value);
 
       // take the value of primitive javascript datatypes
