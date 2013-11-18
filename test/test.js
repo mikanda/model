@@ -104,6 +104,18 @@ describe('Model', function(){
         }, 0);
       });
   });
+  it('should ignore setting a new value equals the old one', function(){
+    request
+      .get('/user')
+      .end(function(err, res){
+        if (err) return done(err);
+        var user = new User(res.body);
+        var lastLogin = user.lastLogin;
+        user.lastLogin = new Date(user.lastLogin);
+        expect(user.dirty).to.be.false;
+        expect(user.lastLogin).to.equal(lastLogin);
+      });
+  });
   describe('.reset()', function(){
     it('should reset the example model', function(){
       request
@@ -147,5 +159,6 @@ var Contact = model()
 
 var User = model()
   .attr('name')
+  .attr('lastLogin', Date)
   .attr('address', Address)
   .attr('contact', { type: Contact });
