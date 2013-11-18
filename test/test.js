@@ -121,6 +121,26 @@ describe('Model', function(){
         });
       });
   });
+  describe('.reset(name)', function(){
+    it('should reset attribute `name` and `address`.`name` of the example model', function(){
+      request
+        .get('/user')
+        .end(function(err, res){
+          if (err) return done(err);
+          var user = new User(res.body);
+          user.name = '';
+          user.address.name = '';
+          expect(user.dirty).to.be.true;
+          user.reset('name');
+          expect(user.dirty).to.be.true;
+          expect(user.name).to.equal(res.body.name);
+          expect(user.address.name).not.to.equal(res.body.address.name);
+          user.address.reset('name');
+          expect(user.dirty).to.be.false;
+          expect(user.address.name).to.equal(res.body.address.name);
+        });
+      });
+  });
 });
 
 
