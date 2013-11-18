@@ -7,6 +7,7 @@ var bind = require('bind')
   , each = require('each')
   , object = require('object')
   , equals = require('equals')
+  , type = require('type')
   , toFunction = require('to-function');
 
 /**
@@ -44,7 +45,8 @@ exports.set = function(attr, value, silent){
 
   // ignore undefined attrs
   if (opts === undefined) return value;
-  if (equals(value, old)) return value;
+  if ((type(old) === 'object' && value === old)
+    || (type(old) !== 'object' && equals(value, old))) return value;
 
   // convert the value into the type if necessary and not null
   if (typeof opts.type == 'function') {
@@ -65,7 +67,8 @@ exports.set = function(attr, value, silent){
     this._bind(value, attr);
   } else if (!silent && opts.persistent) {
     if (!(attr in orig)) orig[attr] = old;
-    else if (equals(orig[attr], value)) delete orig[attr];
+    else if ((type(orig[attr]) === 'object' && orig[attr] === value)
+      || (type(orig[attr]) !== 'object' && equals(orig[attr], value))) delete orig[attr];
     this._updateDirty();
   }
   if (!silent) {
