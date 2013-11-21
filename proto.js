@@ -19,6 +19,8 @@ var bind = require('bind')
  */
 
 exports.get = function(attr, value){
+  var fn = this.model._attrs[attr].compute;
+  if (fn) return fn.call(this, attr);
   if (this._values[attr] === undefined) return value;
   return this._values[attr];
 };
