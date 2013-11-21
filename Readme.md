@@ -76,6 +76,9 @@
      * `persistent` - If false this value is not included within the JSON
        representation of the model and doesn't affect the dirty status of the
        model.  **default: false**
+     * `compute` - A function which is called as getter to the
+       attribute.  It gets passed the attribute name for which it is
+       registered.  The context of the function is the object.
 
 ## model instance API
 
