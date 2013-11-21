@@ -9,6 +9,7 @@
     "component/emitter": "1.0.1",
     "component/each": "0.1.0",
     "component/bind": "0.0.1",
+    "component/type": "1.0.0",
     "jkroso/equals": "0.3.2"
   },
   "development": {

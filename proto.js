@@ -1,3 +1,4 @@
+
 /**
  * Module dependencies.
  */
@@ -6,6 +7,7 @@ var bind = require('bind')
   , each = require('each')
   , object = require('object')
   , equals = require('equals')
+  , type = require('type')
   , toFunction = require('to-function');
 
 /**
@@ -42,7 +44,8 @@ exports.set = function(attr, value, silent){
 
   // ignore undefined attrs
   if (opts === undefined) return value;
-  if (value === old) return value;
+  if ((type(old) === 'object' && value === old)
+    || (type(old) !== 'object' && equals(value, old))) return value;
 
   // convert the value into the type if necessary and not null
   if (typeof opts.type == 'function') {
@@ -63,7 +66,8 @@ exports.set = function(attr, value, silent){
     this._bind(value, attr);
   } else if (!silent && opts.persistent) {
     if (!(attr in orig)) orig[attr] = old;
-    else if (equals(orig[attr], value)) delete orig[attr];
+    else if ((type(orig[attr]) === 'object' && orig[attr] === value)
+      || (type(orig[attr]) !== 'object' && equals(orig[attr], value))) delete orig[attr];
     this._updateDirty();
   }
   if (!silent) {
@@ -74,13 +78,13 @@ exports.set = function(attr, value, silent){
 };
 
 /**
- * Resets all values. Also iterates on all nested models.
+ * Resets the given attribute or all values. Also iterates on all nested models.
  */
 
-exports.reset = function(){
+exports.reset = function(attr){
   var self = this;
   if (!this.dirty) return;
-  each(this.model.attrs, function(attr){
+  function reset(attr) {
 
     // skip dirty attr
     if (attr == 'dirty') return;
@@ -90,7 +94,8 @@ exports.reset = function(){
     } else if (self._orig.hasOwnProperty(attr)) {
       self[attr] = self._orig[attr];
     }
-  });
+  }
+  return attr === undefined ? each(this.model.attrs, reset) : reset(attr);
 };
 
 /**

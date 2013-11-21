@@ -16,6 +16,9 @@ exports.User = factory()
   .attr('name', function(){
     return Charlatan.Name.name();
   })
+  .attr('lastLogin', function(){
+    return new Date();
+  })
   .attr('address', function(){
     return new exports.Address();
   })
