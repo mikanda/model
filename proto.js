@@ -224,15 +224,28 @@ exports.update = function(values){
 };
 
 /**
- * Convert the model to a JSON object.  Calls .toJSON() on sub-objects
- * if available.
+ * Clone the instance.
  */
 
-exports.toJSON = function(){
+exports.clone = function(){
+  var Model = this.model;
+  return new Model(this.toJSON(true));
+};
+
+/**
+ * Convert the model to a JSON object.  Calls .toJSON() on sub-objects
+ * if available.
+ *
+ * @param {Boolean} nonPersistent `true` if non-persistent attributes
+ * should be included
+ */
+
+exports.toJSON = function(nonPersistent){
   var self = this
     , json = {};
   each(this.model._attrs, function(attr, opts){
-    if (!opts.persistent) return;
+    if (!nonPersistent && !opts.persistent) return;
+    if (attr === 'dirty') return;
     var value = self[attr];
     if (value != null && value.toJSON) return json[attr] = value.toJSON();
     json[attr] = value;
