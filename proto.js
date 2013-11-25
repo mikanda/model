@@ -247,7 +247,9 @@ exports.toJSON = function(nonPersistent){
     if (!nonPersistent && !opts.persistent) return;
     if (attr === 'dirty') return;
     var value = self[attr];
-    if (value != null && value.toJSON) return json[attr] = value.toJSON();
+    if (value != null && value.toJSON) {
+      return json[attr] = value.toJSON(nonPersistent);
+    }
     json[attr] = value;
   });
   return json;
