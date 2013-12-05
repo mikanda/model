@@ -38,9 +38,11 @@ exports.get = function(attr, value){
 
 exports.set = function(attr, value, silent){
   var self = this
+    , opts = this.model._attrs[attr]
     , orig = this._orig
-    , old = this[attr]
-    , opts = this.model._attrs[attr];
+    , old = this._values[attr] === undefined
+        ? opts.preset
+        : this._values[attr];
 
   // ignore undefined attrs
   if (opts === undefined) return value;
